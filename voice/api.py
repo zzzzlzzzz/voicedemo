@@ -3,7 +3,7 @@ from datetime import datetime
 from flask import Blueprint, current_app, request
 from xmlschema import XMLSchemaValidationError
 
-from voice.ext import db
+from voice.ext import db, celery
 from voice.models import Entity, Service, Phone, Email
 
 
@@ -29,6 +29,7 @@ def entity():
                 item.services.append(Service(service['Name'], service['@is_main'], available_from, available_to))
         db.session.add(item)
         db.session.commit()
+        celery.send_task('voice.tasks.phone_detection', (item.entity_id, ))
     return '', 201
 
 

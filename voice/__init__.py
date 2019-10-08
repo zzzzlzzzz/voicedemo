@@ -4,7 +4,7 @@ from flask import Flask
 from xmlschema import XMLSchema
 
 from voice.ext import db
-from voice import api
+from voice import api, tasks
 
 
 def create_app() -> 'Flask':
@@ -16,6 +16,7 @@ def create_app() -> 'Flask':
     app = Flask(__name__)
     app.config.from_object(environ.get('VOICE_CONFIG', 'config.ProductionConfig'))
     db.init_app(app)
+    tasks.init_app(app)
     app.register_blueprint(api.bp)
     setattr(api.bp, 'entity_schema', XMLSchema(app.config['ENTITY_XSD']))
     return app
