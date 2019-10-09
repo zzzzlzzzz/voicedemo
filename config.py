@@ -27,6 +27,7 @@ class TestConfig(Config):
     CELERY = {
         **Config.CELERY,
         'task_always_eager': True,
+        'task_eager_propagates': True,
     }
 
 
