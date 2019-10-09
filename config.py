@@ -23,7 +23,11 @@ class DevelopmentConfig(Config):
 
 
 class TestConfig(Config):
-    pass
+    TESTING = True
+    CELERY = {
+        **Config.CELERY,
+        'task_always_eager': True,
+    }
 
 
 class ProductionConfig(Config):

@@ -25,4 +25,5 @@ def phone_detection(self: 'Task', entity_id: int) -> None:
     except NoResultFound:
         pass
     except SQLAlchemyError as e:
+        logger.exception('phone_detection')
         self.retry(exc=e)

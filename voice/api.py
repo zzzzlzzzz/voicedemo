@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask import Blueprint, current_app, request
 from xmlschema import XMLSchemaValidationError
+from xml.etree.ElementTree import ParseError
 
 from voice.ext import db, celery
 from voice.models import Entity, Service, Phone, Email
@@ -34,6 +35,7 @@ def entity():
 
 
 @bp.errorhandler(XMLSchemaValidationError)
+@bp.errorhandler(ParseError)
 def validation_error(_):
     db.session.rollback()
     return '', 400
